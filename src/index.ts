@@ -2,13 +2,13 @@ import { DataProvider } from "@pankod/refine";
 
 const hasKey = <T extends object>(obj: T, k: keyof any): k is keyof T => k in obj;
 
-type DataProviderKey = Exclude<keyof Required<DataProvider>, "custom">;
-type DataProviderMethod<T extends DataProviderKey> = DataProvider[T];
+type DataProviderKey = keyof DataProvider;
+type DataProviderMethod<T extends DataProviderKey> = Required<DataProvider>[T];
 type DataProviderMethodParameters<T extends DataProviderKey> = Parameters<
   DataProviderMethod<T>
 >;
 
-type CustomizationsType = Record<string, Partial<DataProvider>>;
+type CustomizationsType = Record<string, Partial<Omit<DataProvider, "custom">>>;
 
 export function customize(
   source: DataProvider,
@@ -25,20 +25,24 @@ export function customize(
       target: DataProvider,
       key: T,
     ) {
-      return function customHandler(
+      if(key === "custom") {
+        return target[key];
+      }
+
+      return function customizerHandler(
         ...params: A
       ): R {
-        const method: DataProviderMethod<T> = target[key];
+        const methodOnBase = target[key];
 
         if (
-          typeof method !== "function"
+          typeof methodOnBase !== "function"
         ) {
           throw new Error(
             `"${key}" does not exist as a method.`,
           );
         }
 
-        const targetResponse: R = (method as any)(...params);
+        const targetResponse: R = (methodOnBase as any)(...params);
 
         if (!targetResponse) {
           throw new Error(
