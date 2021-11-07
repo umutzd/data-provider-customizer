@@ -61,11 +61,6 @@ describe('extendDataProvider', () => {
 
     callAllMethods(dataProvider);
 
-    dataProvider.custom?.({
-      url: "dxampleasdfasd",
-      method: "get",
-    });
-
     expect(mockedDataProviderBase.create).toHaveBeenCalled();
     expect(mockedDataProviderBase.createMany).toHaveBeenCalled();
     expect(mockedDataProviderBase.deleteOne).toHaveBeenCalled();
