@@ -1,0 +1,59 @@
+{
+  "version": "0.1.0",
+  "license": "MIT",
+  "main": "dist/index.js",
+  "typings": "dist/index.d.ts",
+  "files": [
+    "dist",
+    "src"
+  ],
+  "engines": {
+    "node": ">=10"
+  },
+  "scripts": {
+    "start": "tsdx watch",
+    "build": "tsdx build",
+    "test": "tsdx test",
+    "lint": "tsdx lint",
+    "prepare": "install-peers && tsdx build",
+    "size": "size-limit",
+    "analyze": "size-limit --why"
+  },
+  "husky": {
+    "hooks": {
+      "pre-commit": "tsdx lint"
+    }
+  },
+  "prettier": {
+    "printWidth": 80,
+    "semi": true,
+    "singleQuote": true,
+    "trailingComma": "es5"
+  },
+  "name": "data-provider-customizer",
+  "author": "Umut Özdemir",
+  "module": "dist/data-provider-customizer.esm.js",
+  "size-limit": [
+    {
+      "path": "dist/data-provider-customizer.cjs.production.min.js",
+      "limit": "10 KB"
+    },
+    {
+      "path": "dist/data-provider-customizer.esm.js",
+      "limit": "10 KB"
+    }
+  ],
+  "devDependencies": {
+    "@size-limit/preset-small-lib": "^6.0.3",
+    "husky": "^7.0.4",
+    "install-peers-cli": "^2.2.0",
+    "size-limit": "^6.0.3",
+    "tsdx": "^0.14.1",
+    "tslib": "^2.3.1",
+    "typescript": "^4.4.4"
+  },
+  "dependencies": {},
+  "peerDependencies": {
+    "@pankod/refine": ">=1.0.0 <3.0.0"
+  }
+}
