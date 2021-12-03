@@ -1,4 +1,5 @@
-import { DataProvider } from "@pankod/refine";
+import { DataProvider as RefineDataProvider } from "@pankod/refine";
+import { DataProvider } from "./DataProvider";
 
 const customizableDataProviderKeys = [
   "getList",
@@ -15,26 +16,20 @@ const customizableDataProviderKeys = [
 type DataProviderKey = keyof DataProvider;
 type CustomizableDataProviderKey = typeof customizableDataProviderKeys[number];
 type DataProviderMethod<T extends DataProviderKey> = Required<DataProvider>[T];
-type DataProviderMethodParameters<T extends DataProviderKey> = Parameters<
-  DataProviderMethod<T>
->;
 type DataProviderCustomizableMethodParameters<T extends CustomizableDataProviderKey> = Parameters<
   DataProviderMethod<T>
 >;
 
-type CustomizationsType = Record<string, Partial<Omit<DataProvider, "custom">>>;
+type CustomizationsType = Record<string, Partial<Pick<DataProvider, CustomizableDataProviderKey>>>;
 
 function keyIsCustomizable(key: any): key is CustomizableDataProviderKey {
   return customizableDataProviderKeys.includes(key);
 }
 
-const hasKey = <T extends object>(obj: T, k: keyof any): k is keyof T =>
-  k in obj;
-
 export function customize(
   source: DataProvider,
   customizations?: CustomizationsType,
-): DataProvider {
+): RefineDataProvider {
   const proxiedSource = new Proxy(source, {
     get: function proxyGetHandler<
       K extends DataProviderKey,
@@ -59,8 +54,10 @@ export function customize(
 
         const resource = firstParam.resource;
 
-        if (typeof customizations?.[resource] !== "undefined") {
+        const customizedMethodToCall = customizations?.[resource]?.[key];
 
+        if (typeof customizedMethodToCall === "function") {
+          return (customizations?.[resource]?.[key] as any)(...params) as R;
         }
 
         const methodOnBase = target[key];
@@ -86,5 +83,5 @@ export function customize(
     },
   });
 
-  return proxiedSource;
+  return proxiedSource as RefineDataProvider;
 }
