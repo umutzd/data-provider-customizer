@@ -15,7 +15,7 @@ import {
   Pagination,
   UpdateManyResponse,
   UpdateResponse,
-} from "@pankod/refine/dist/interfaces";
+} from '@pankod/refine/dist/interfaces';
 
 export interface DataProvider {
   getList: (params: {
@@ -70,7 +70,7 @@ export interface DataProvider {
   getApiUrl: () => string;
   custom?: (params: {
     url: string;
-    method: "get" | "delete" | "head" | "options" | "post" | "put" | "patch";
+    method: 'get' | 'delete' | 'head' | 'options' | 'post' | 'put' | 'patch';
     sort?: CrudSorting;
     filters?: CrudFilter[];
     payload?: {};

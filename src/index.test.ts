@@ -1,20 +1,20 @@
-import { DataProvider as RefineDataProvider } from "@pankod/refine";
-import { DataProvider } from "./DataProvider";
-import { customize } from "../src";
+import { DataProvider as RefineDataProvider } from '@pankod/refine';
+import { DataProvider } from './DataProvider';
+import { customize } from '../src';
 
 export const posts = [
   {
-    id: "1",
-    title: "Necessitatibus",
+    id: '1',
+    title: 'Necessitatibus',
   },
   {
-    id: "2",
-    title: "Recusandae",
+    id: '2',
+    title: 'Recusandae',
   },
 ];
 
 // const testResource = "posts";
-const testApiUrl = "https://example.org";
+const testApiUrl = 'https://example.org';
 
 const mockedDataProviderBase: RefineDataProvider = {
   create: jest.fn(() => Promise.resolve({ data: posts[0] })),
@@ -49,18 +49,18 @@ const callAllMethods = (dataProvider: DataProvider, resourceName: string) => {
     variables: posts[1],
   });
   dataProvider.getApiUrl();
-  dataProvider.custom?.({ url: testApiUrl, method: "get" });
+  dataProvider.custom?.({ url: testApiUrl, method: 'get' });
 };
 
 beforeEach(() => {
   jest.clearAllMocks();
 });
 
-describe("extendDataProvider", () => {
-  it("does not interrupt any calls if no overrides are configured", () => {
+describe('extendDataProvider', () => {
+  it('does not interrupt any calls if no overrides are configured', () => {
     const dataProvider = customize(mockedDataProviderBase);
 
-    callAllMethods(dataProvider, "posts");
+    callAllMethods(dataProvider, 'posts');
 
     expect(mockedDataProviderBase.create).toHaveBeenCalled();
     expect(mockedDataProviderBase.createMany).toHaveBeenCalled();
@@ -75,17 +75,17 @@ describe("extendDataProvider", () => {
     expect(mockedDataProviderBase.custom).toHaveBeenCalled();
   });
 
-  it("calls customized methods for customized resources if overrides are configured", () => {
+  it('calls customized methods for customized resources if overrides are configured', () => {
     const customResourcePostsOverrides: Partial<DataProvider> = {
       create: jest.fn(() => Promise.resolve({ data: posts[0] })),
       deleteMany: jest.fn(() => Promise.resolve({ data: [] })),
     };
 
     const dataProvider = customize(mockedDataProviderBase, {
-      "posts": customResourcePostsOverrides,
+      posts: customResourcePostsOverrides,
     });
 
-    callAllMethods(dataProvider, "posts");
+    callAllMethods(dataProvider, 'posts');
 
     expect(mockedDataProviderBase.create).not.toHaveBeenCalled();
     expect(mockedDataProviderBase.deleteMany).not.toHaveBeenCalled();
@@ -104,7 +104,7 @@ describe("extendDataProvider", () => {
     expect(mockedDataProviderBase.custom).toHaveBeenCalled();
   });
 
-  it("calls base methods for not customized resources", () => {
+  it('calls base methods for not customized resources', () => {
     const customResourcePostsOverrides: Partial<DataProvider> = {
       create: jest.fn(() => Promise.resolve({ data: posts[0] })),
       deleteMany: jest.fn(() => Promise.resolve({ data: [] })),
@@ -114,7 +114,7 @@ describe("extendDataProvider", () => {
       posts: customResourcePostsOverrides,
     });
 
-    callAllMethods(dataProvider, "categories");
+    callAllMethods(dataProvider, 'categories');
 
     expect(customResourcePostsOverrides.create).not.toHaveBeenCalled();
     expect(customResourcePostsOverrides.deleteMany).not.toHaveBeenCalled();
