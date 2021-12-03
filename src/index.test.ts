@@ -1,5 +1,5 @@
 import { DataProvider as RefineDataProvider } from "@pankod/refine";
-import { DataProvider } from "./DataProvider";
+import { DataProvider } from "./DataProvider";
 import { customize } from "../src";
 
 export const posts = [
@@ -82,7 +82,7 @@ describe("extendDataProvider", () => {
     };
 
     const dataProvider = customize(mockedDataProviderBase, {
-      "posts": customResourcePostsOverrides
+      "posts": customResourcePostsOverrides,
     });
 
     callAllMethods(dataProvider, "posts");
@@ -111,14 +111,14 @@ describe("extendDataProvider", () => {
     };
 
     const dataProvider = customize(mockedDataProviderBase, {
-      posts: customResourcePostsOverrides
+      posts: customResourcePostsOverrides,
     });
 
-    callAllMethods(dataProvider, "categories" );
+    callAllMethods(dataProvider, "categories");
 
     expect(customResourcePostsOverrides.create).not.toHaveBeenCalled();
     expect(customResourcePostsOverrides.deleteMany).not.toHaveBeenCalled();
-    
+
     expect(mockedDataProviderBase.create).toHaveBeenCalled();
     expect(mockedDataProviderBase.deleteMany).toHaveBeenCalled();
     expect(mockedDataProviderBase.createMany).toHaveBeenCalled();

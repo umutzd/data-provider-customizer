@@ -46,37 +46,18 @@ export function customize(
       M extends DataProviderCustomizableMethodParameters<typeof key>>(
         ...params: M
       ): R {
-        const firstParam = params?.[0];
-
-        if(!firstParam) {
-          throw new Error("Please pass arguments to data provider method");
-        }
+        const firstParam = params[0];
 
         const resource = firstParam.resource;
 
         const customizedMethodToCall = customizations?.[resource]?.[key];
 
         if (typeof customizedMethodToCall === "function") {
-          return (customizations?.[resource]?.[key] as any)(...params) as R;
+          return (customizedMethodToCall as any)(...params) as R;
         }
 
         const methodOnBase = target[key];
-
-        if (
-          typeof methodOnBase !== "function"
-        ) {
-          throw new Error(
-            `"${key}" does not exist as a method.`,
-          );
-        }
-
         const targetResponse: R = (methodOnBase as any)(...params);
-
-        if (!targetResponse) {
-          throw new Error(
-            `${key} method of base data provider does not exist or did not return any value`,
-          );
-        }
 
         return targetResponse;
       };
