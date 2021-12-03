@@ -1,21 +1,22 @@
-import { DataProvider } from '@pankod/refine';
-import { customize } from '../src';
+import { DataProvider as RefineDataProvider } from "@pankod/refine";
+import { DataProvider } from "./DataProvider";
+import { customize } from "../src";
 
 export const posts = [
   {
-    id: '1',
-    title: 'Necessitatibus',
+    id: "1",
+    title: "Necessitatibus",
   },
   {
-    id: '2',
-    title: 'Recusandae',
+    id: "2",
+    title: "Recusandae",
   },
 ];
 
-const testResource = 'posts';
-const testApiUrl = 'https://example.org';
+// const testResource = "posts";
+const testApiUrl = "https://example.org";
 
-const mockedDataProviderBase: DataProvider = {
+const mockedDataProviderBase: RefineDataProvider = {
   create: jest.fn(() => Promise.resolve({ data: posts[0] })),
   createMany: jest.fn(() => Promise.resolve({ data: posts })),
   deleteOne: jest.fn(() => Promise.resolve({ data: posts[0] })),
@@ -27,39 +28,39 @@ const mockedDataProviderBase: DataProvider = {
   updateMany: jest.fn(() => Promise.resolve({ data: [] })),
   getApiUrl: jest.fn(() => testApiUrl),
   custom: jest.fn(() => Promise.resolve({ data: [...posts] })),
-} as DataProvider;
+} as RefineDataProvider;
 
-const callAllMethods = (dataProvider: DataProvider) => {
-  dataProvider.create({ resource: testResource, variables: posts[0] });
-  dataProvider.createMany({ resource: testResource, variables: posts });
-  dataProvider.deleteOne({ resource: testResource, id: posts[0].id });
-  dataProvider.deleteMany({ resource: testResource, ids: [posts[0].id] });
-  dataProvider.getList({ resource: testResource });
-  dataProvider.getMany({ resource: testResource, ids: [posts[0].id] });
-  dataProvider.getOne({ resource: testResource, id: posts[0].id });
+const callAllMethods = (dataProvider: DataProvider, resourceName: string) => {
+  dataProvider.create({ resource: resourceName, variables: posts[0] });
+  dataProvider.createMany({ resource: resourceName, variables: posts });
+  dataProvider.deleteOne({ resource: resourceName, id: posts[0].id });
+  dataProvider.deleteMany({ resource: resourceName, ids: [posts[0].id] });
+  dataProvider.getList({ resource: resourceName });
+  dataProvider.getMany({ resource: resourceName, ids: [posts[0].id] });
+  dataProvider.getOne({ resource: resourceName, id: posts[0].id });
   dataProvider.update({
-    resource: testResource,
+    resource: resourceName,
     id: posts[0].id,
     variables: posts[1],
   });
   dataProvider.updateMany({
-    resource: testResource,
+    resource: resourceName,
     ids: [posts[0].id],
     variables: posts[1],
   });
   dataProvider.getApiUrl();
-  dataProvider.custom?.({ url: testApiUrl, method: 'get' });
+  dataProvider.custom?.({ url: testApiUrl, method: "get" });
 };
 
 beforeEach(() => {
   jest.clearAllMocks();
 });
 
-describe('extendDataProvider', () => {
-  it('does not interrupt any calls if no overrides are configured', () => {
+describe("extendDataProvider", () => {
+  it("does not interrupt any calls if no overrides are configured", () => {
     const dataProvider = customize(mockedDataProviderBase);
 
-    callAllMethods(dataProvider);
+    callAllMethods(dataProvider, "posts");
 
     expect(mockedDataProviderBase.create).toHaveBeenCalled();
     expect(mockedDataProviderBase.createMany).toHaveBeenCalled();
@@ -74,12 +75,60 @@ describe('extendDataProvider', () => {
     expect(mockedDataProviderBase.custom).toHaveBeenCalled();
   });
 
-  // it('calls customized methods for customized resources if overrides are configured', () => {
-  //   const customResourceOverrides: Partial<DataProvider> = {
-  //     create: () => Promise.resolve({ data: posts[0] }),
-  //     deleteMany: () => Promise.resolve({ data: [] }),
-  //   } as Partial<DataProvider>;
+  it("calls customized methods for customized resources if overrides are configured", () => {
+    const customResourcePostsOverrides: Partial<DataProvider> = {
+      create: jest.fn(() => Promise.resolve({ data: posts[0] })),
+      deleteMany: jest.fn(() => Promise.resolve({ data: [] })),
+    };
 
-  //   const dataProvider = customize(dummyBaseDataProvider);
-  // });
+    const dataProvider = customize(mockedDataProviderBase, {
+      "posts": customResourcePostsOverrides
+    });
+
+    callAllMethods(dataProvider, "posts");
+
+    expect(mockedDataProviderBase.create).not.toHaveBeenCalled();
+    expect(mockedDataProviderBase.deleteMany).not.toHaveBeenCalled();
+
+    expect(customResourcePostsOverrides.create).toHaveBeenCalled();
+    expect(customResourcePostsOverrides.deleteMany).toHaveBeenCalled();
+
+    expect(mockedDataProviderBase.createMany).toHaveBeenCalled();
+    expect(mockedDataProviderBase.deleteOne).toHaveBeenCalled();
+    expect(mockedDataProviderBase.getList).toHaveBeenCalled();
+    expect(mockedDataProviderBase.getMany).toHaveBeenCalled();
+    expect(mockedDataProviderBase.getOne).toHaveBeenCalled();
+    expect(mockedDataProviderBase.update).toHaveBeenCalled();
+    expect(mockedDataProviderBase.updateMany).toHaveBeenCalled();
+    expect(mockedDataProviderBase.getApiUrl).toHaveBeenCalled();
+    expect(mockedDataProviderBase.custom).toHaveBeenCalled();
+  });
+
+  it("calls base methods for not customized resources", () => {
+    const customResourcePostsOverrides: Partial<DataProvider> = {
+      create: jest.fn(() => Promise.resolve({ data: posts[0] })),
+      deleteMany: jest.fn(() => Promise.resolve({ data: [] })),
+    };
+
+    const dataProvider = customize(mockedDataProviderBase, {
+      posts: customResourcePostsOverrides
+    });
+
+    callAllMethods(dataProvider, "categories" );
+
+    expect(customResourcePostsOverrides.create).not.toHaveBeenCalled();
+    expect(customResourcePostsOverrides.deleteMany).not.toHaveBeenCalled();
+    
+    expect(mockedDataProviderBase.create).toHaveBeenCalled();
+    expect(mockedDataProviderBase.deleteMany).toHaveBeenCalled();
+    expect(mockedDataProviderBase.createMany).toHaveBeenCalled();
+    expect(mockedDataProviderBase.deleteOne).toHaveBeenCalled();
+    expect(mockedDataProviderBase.getList).toHaveBeenCalled();
+    expect(mockedDataProviderBase.getMany).toHaveBeenCalled();
+    expect(mockedDataProviderBase.getOne).toHaveBeenCalled();
+    expect(mockedDataProviderBase.update).toHaveBeenCalled();
+    expect(mockedDataProviderBase.updateMany).toHaveBeenCalled();
+    expect(mockedDataProviderBase.getApiUrl).toHaveBeenCalled();
+    expect(mockedDataProviderBase.custom).toHaveBeenCalled();
+  });
 });
