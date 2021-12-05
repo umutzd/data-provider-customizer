@@ -61,8 +61,10 @@ In this example, `posts` and `categories` resources use a different data provide
 export const dataProvider = customize(baseDataProvider, {
   posts: supabaseDataProvider,
   categories: customize(supabaseDataProvider, {
-    getMany: () => {
-      // specific getMany implementation ...
+    categories: {
+      getMany: () => {
+        // specific getMany implementation ...
+      }
     }
   }),
 });
