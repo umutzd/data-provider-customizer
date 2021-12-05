@@ -1,6 +1,6 @@
 import { DataProvider as RefineDataProvider } from '@pankod/refine';
 import { DataProvider } from './DataProvider';
-import { customize } from '../src';
+import customize from '../src';
 
 export const posts = [
   {

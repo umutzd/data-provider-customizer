@@ -4,7 +4,7 @@ import {
   dataProvider as createSupabaseDataProvider,
 } from '@pankod/refine-supabase';
 
-import { customize } from 'data-provider-customizer';
+import customize from 'data-provider-customizer';
 
 const REST_API_RUL = '<REST-URL>';
 
