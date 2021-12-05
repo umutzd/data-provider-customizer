@@ -2,6 +2,8 @@
 
 This project is an example of merging two data providers into one with [data-provider-customizer 💖🚀][dpc]. 
 
+See [dataProvider.ts](https://github.com/miyavsu-limited/data-provider-customizer/blob/main/examples/merge/src/utility/dataProvider.ts)
+
 You'll see two resources in the menu: "Users" and "Posts". "Users" sources it's data from [@pankod/refine-simple-rest][simple-rest], "Posts" resource is fetched from [@pankod/refine-supabase][supabase-example]. 
 
 Also, since managing posts requires the application to make requests at a "categories" resource on supabase, `categories` resource is also set to use `supabase`.
