@@ -29,7 +29,7 @@ function keyIsCustomizable(key: any): key is CustomizableDataProviderKey {
   return customizableDataProviderKeys.includes(key);
 }
 
-export default function customize(
+export function customize(
   source: DataProvider,
   customizations?: CustomizationsType
 ): RefineDataProvider {
