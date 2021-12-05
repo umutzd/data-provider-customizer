@@ -1,5 +1,7 @@
 # data-provider-customizer
 
+[![Codacy Badge](https://api.codacy.com/project/badge/Grade/6b0cc171abf548e0988c2d502e686e06)](https://app.codacy.com/gh/miyavsu-limited/data-provider-customizer?utm_source=github.com&utm_medium=referral&utm_content=miyavsu-limited/data-provider-customizer&utm_campaign=Badge_Grade_Settings)
+
 With this tool, you can customize your [refine][refine] [data providers][data-provider] per resource. You can use different data providers for different resources, override one method for just one specific resource etc. 
 
 If you have a non-standard API or some endpoint that refine should hit and your data provider methods don't work for that endpoint, you can use this tool to override a method for that resource. 
