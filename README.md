@@ -1,6 +1,6 @@
 # data-provider-customizer
 
-![Codacy grade](https://img.shields.io/codacy/grade/db7039142c874076a63b46851a92f998) ![Codacy coverage](https://img.shields.io/codacy/coverage/db7039142c874076a63b46851a92f998) ![npm bundle size](https://img.shields.io/bundlephobia/minzip/data-provider-customizer@latest) 
+[![Codacy Badge](https://app.codacy.com/project/badge/Grade/db7039142c874076a63b46851a92f998)](https://www.codacy.com/gh/miyavsu-limited/data-provider-customizer/dashboard?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=miyavsu-limited/data-provider-customizer&amp;utm_campaign=Badge_Grade) ![Codacy coverage](https://img.shields.io/codacy/coverage/db7039142c874076a63b46851a92f998) ![npm bundle size](https://img.shields.io/bundlephobia/minzip/data-provider-customizer@latest) 
 
 With this tool, you can customize your [refine][refine] [data providers][data-provider] per resource. You can use different data providers for different resources, override one method for just one specific resource etc. 
 
