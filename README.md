@@ -1,5 +1,7 @@
 # data-provider-customizer
 
+![Codacy grade](https://img.shields.io/codacy/grade/db7039142c874076a63b46851a92f998) ![Codacy coverage](https://img.shields.io/codacy/coverage/db7039142c874076a63b46851a92f998) ![npm bundle size](https://img.shields.io/bundlephobia/minzip/data-provider-customizer@latest) 
+
 With this tool, you can customize your [refine][refine] [data providers][data-provider] per resource. You can use different data providers for different resources, override one method for just one specific resource etc. 
 
 If you have a non-standard API or some endpoint that refine should hit and your data provider methods don't work for that endpoint, you can use this tool to override a method for that resource. 
