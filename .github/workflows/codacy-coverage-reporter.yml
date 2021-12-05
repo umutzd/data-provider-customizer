@@ -8,6 +8,8 @@ jobs:
     name: codacy-coverage-reporter
     steps:
       - uses: actions/checkout@v2
+      - name: Install deps and build (with cache)
+        uses: bahmutov/npm-install@v1
       - run: npm run coverage
       - name: Run codacy-coverage-reporter
         uses: codacy/codacy-coverage-reporter-action@v1
