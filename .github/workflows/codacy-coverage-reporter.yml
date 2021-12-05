@@ -8,6 +8,7 @@ jobs:
     name: codacy-coverage-reporter
     steps:
       - uses: actions/checkout@v2
+      - run: npm run coverage
       - name: Run codacy-coverage-reporter
         uses: codacy/codacy-coverage-reporter-action@v1
         with:
