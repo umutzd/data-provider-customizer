@@ -47,7 +47,7 @@
   "devDependencies": {
     "@pankod/refine": ">=1.0.0 <3.0.0",
     "@size-limit/preset-small-lib": "^6.0.3",
-    "husky": "^7.0.4",
+    "husky": "^8.0.2",
     "install-peers-cli": "^2.2.0",
     "size-limit": "^6.0.3",
     "tsdx": "^0.14.1",
